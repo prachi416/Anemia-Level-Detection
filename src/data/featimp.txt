@@ -1,0 +1,10 @@
+                Feature  Importance
+0     adj_hemo_altsmoke    0.601642
+1  adj_hemo_altsmkbirth    0.213129
+2     adj_hemo_altbirth    0.043742
+3          1stbirth_age    0.035449
+4          adj_hemo_alt    0.034388
+5           past_births    0.023312
+6             age_group    0.021416
+7             breastfed    0.020259
+8         anemia_level1    0.006664

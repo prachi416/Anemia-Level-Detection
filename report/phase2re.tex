@@ -1,0 +1,213 @@
+\chapter{Phase 2}
+
+
+\section{Algorithm 1 : K-Nearest Neighbors (KNN)}
+
+
+\subsection{Justification for choosing KNN}
+
+KNN is a very simple non-parametric, instance-based learning algorithm. It is simple to implement and can be effective for classification tasks. It makes predictions based on the majority class of the `k` number of nearest neighbors, which can be useful for identifying patterns in the anemia dataset where similar features may lead to similar anemia levels.
+
+\subsection{Tuning the model}
+To find the optimal value of k, we performed the a grid search with cross-validation - very similar to the classical elbow method for KNN. We thought to use a range of k values from 2 to 40 and used 4-fold cross-validation to evaluate the performance of each k value. The best k value was found to be 40, with the lowest error rate of 0.3968.
+
+\subsection{Effectiveness}
+After training the KNN model with the optimal k value of 40, we reevaluated its performance on the test set. The model achieved an accuracy of `0.6186`, which indicates that it correctly predicted the anemia level for approximately 61.9\% of the instances in the test set.
+
+
+The classification report provides more detailed metrics:
+
+
+- Precision: The model struggled with precision for anemia levels 0 and 4, achieving 0 for both. This suggests that the model did not correctly identify any instances of these levels. However, it performed relatively well for levels 1, 2, and 3, with precision values of 0.65, 0.41, and 0.70, respectively.
+
+
+- Recall: The model achieved high recall for anemia level 1 (0.88) but struggled with levels 0 and 4 again (0 for both). Recall for levels 2 was low (0.28) and 3 was somewhat ok (0.60).
+
+
+- F1-score: The F1-score, which is the harmonic mean of precision and recall, was highest for anemia level 1 (0.75) and zero for levels 0 and 4.
+
+Overall, the KNN model performed moderately well in predicting anemia levels, particularly for level 1.
+
+\subsection{Insights}
+
+The KNN model's performance suggests that there are some distinguishable patterns in the features that can help predict anemia levels, particularly for the more prevalent levels (1, 2, and 3). However, the model's difficulty in predicting the less common levels (0 and 4) indicates that more data or additional feature engineering may be necessary to improve performance on these classes.
+
+\section{Algorithm 2 : Naive Bayes}
+
+\subsection{Justification for choosing}
+
+Naive Bayes is a probabilistic classification algorithm that assumes independence between features. Despite this simplicity in the assumption, Naive Bayes can be effective for many real-world problems. It can be effective particularly when dealing with high-dimensional data. It is also computationally efficient. It can handle both continuous and categorical features, making it a good candidate for our anemia dataset, as we have both continuous and categorical features.
+
+\subsection{Tuning the model}
+
+To tune the Naive Bayes model, we performed a grid search with cross-validation to find the optimal value for the `var\_smoothing` parameter. This hyperparameter controls the amount of smoothing applied to the variance estimates. It can help prevent overfitting. The grid search revealed that the best `var\_smoothing` value was 0.0059, achieving a cross-validation accuracy of 0.6269.
+
+\subsection{Effectiveness}
+After training the Naive Bayes model with the optimal `var\_smoothing` value, we evaluated its performance on the test dataset. The parameter tuned model achieved an accuracy of 0.6599, which is an huge improvement over the default Naive Bayes model which had an accuracy of 0.3.
+
+The classification report provides more detailed metrics:
+
+
+- Precision: The optimized model achieved perfect precision for anemia level 0 but struggled with level 4 (0.20). Precision for levels 1, 2, and 3 was 0.96, 0.48, and 0.92, respectively.
+
+
+- Recall: The model again achieved perfect recall for anemia level 0 and high recall for levels 2 and 4 (0.92 and 0.93, respectively). Recall for levels 1 and 3 was somewhat low : 0.64 and 0.42, respectively.
+
+
+- F1-score: The F1-score was perfect for anemia level 0 and lowest for level 4 (0.32). F1-scores for levels 1, 2, and 3 were 0.77, 0.63, and 0.58, respectively.
+
+The optimized Naive Bayes model showed improvement over the default model, particularly in predicting anemia levels 1, 2, and 4. For level 0, it was same as before - the perfect score.
+
+\subsection{Insights}
+
+The Naive Bayes model's performance suggests that even though the assumption of feature independence is very simple it can still lead to reasonably good predictions for a tabular dataset. The model's ability to perfectly predict anemia level 0 indicates that there may be some strong distinguishing features for this class.
+
+
+\section{Algorithm 3 : Logistic Regression}
+
+\subsection{Justification for choosing Logistic Regression}
+
+Logistic Regression is a widely used algorithm for binary and multi-class classification problems. It models the probability of an instance belonging to a particular class based on a linear combination of the input features. Logistic Regression is computationally efficient and interpretable. It can also handle both continuous and categorical features, making it a good candidate for our dataset.
+
+\subsection{Tuning the model}
+
+To tune the Logistic Regression model, we performed a grid search with cross-validation to find the optimal values for the $C$ and $solver$ hyperparameters. The $C$ parameter controls the inverse of the regularization strength. We also used another hyperparameter $penalty$, although it was kept constant during tuning.  It specifies the norm used in the penalization. The $solver$ hyperparameter is the algorithm used for optimization process. The grid search revealed that the best hyperparameters were $C=112.88378916846884$ and $solver='lbfgs'$, achieving a cross-validation accuracy of $0.8617$.
+
+
+After training the Logistic Regression model with the optimal hyperparameters, we evaluated its performance on the test dataset. The hyperparameter tuned optimized model achieved an accuracy of $0.8658$, which is a slight improvement over the default model we trained which had an accuracy of $0.8653$.
+
+
+\subsection{Effectiveness}
+
+
+The classification report provides more detailed metrics:
+
+- Precision: The optimized model achieved high precision for anemia levels 1, 3, and 4 (0.94, 0.90, and 0.89, respectively) but struggled with level 0. Precision for level 2 was 0.73.
+
+
+- Recall: The model achieved high or good recall for all anemia levels 1 upto 4. It again for level 0.
+
+
+- F1-score: The F1-score was high for anemia levels 1, 3 and 4 (0.94, 0.88 and 0.86 respectively) and zero for level 0.
+
+The optimized Logistic Regression model showed good performance in predicting anemia levels 1, 2, 3, and 4, but fails with level 0, maybe due to the imbalanced nature of the dataset.
+
+\subsection{Insights}
+
+The Logistic Regression model performs well, indicating a strong linear relationship between input features and anemia levels. Its high accuracy, precision, recall, and F1-scores for most levels highlight the feature informativeness. However, challenges in predicting level 0 suggest potential improvements through more data or feature engineering.
+\section{Algorithm 4 : Support Vector Machines (SVM)}
+
+\subsection{Justification for choosing}
+
+Support Vector Machines (SVM) is a powerful algorithm for both binary and multi-class classification problems. For our case we have a multi class classification problem. SVM aims to find the optimal hyperplane that maximally separates the different classes in the feature space. It can also handle complex, non-linear decision boundaries by using kernel functions to transform the input space into a higher-dimensional space. SVM is known for its good generalization performance and ability to handle high-dimensional data, making it a suitable choice for our dataset.
+
+
+\subsection{Tuning the model}
+
+To tune the SVM model, we performed a randomized search with cross-validation to find the optimal values for the $C$ and $kernel$ hyperparameters. The $C$ parameter controls the trade-off between achieving a low training error and a low testing error, while the $kernel$ parameter specifies the type of kernel function used to transform the input space. The randomized search revealed that the best hyperparameters were $C=5.03065037324288$ and $kernel='linear'$, achieving a cross-validation accuracy of $0.8812$.
+
+After training the SVM model with the optimal hyperparameters, we evaluated its performance on the test set. The optimized model achieved an accuracy of $0.8864$ - a slight decline over the default SVM model we trained with a linear kernel and had an accuracy of $0.8899$.
+
+
+\subsection{Effectiveness of SVM}
+
+
+The classification report provides more detailed metrics:
+
+- Precision: The optimized model achieved high precision for anemia levels 1, 3 and 4 (0.96, 0.89 and 0.89, respectively) but fails for level 0. Precision for levels 2 was also good 0.77.
+
+- Recall: The model achieved high or good recall for anemia levels 1 to 4 but fails for level 0 (0).
+
+- F1-score: The F1-score was highest for anemia levels 1 and 3 (0.95 and 0.90, respectively) and zero for level 0. F1-scores for levels 2 and 4 were also not bad : 0.80 and 0.86, respectively.
+
+The optimized SVM model showed good performance in predicting anemia levels 1, 2, 3, and 4, but struggled with level 0.
+
+\subsection{Insights }
+
+The SVM model's performance suggests that the anemia levels are well-separated in the feature space, particularly when using a linear kernel. The model's ability to achieve high accuracy and good precision, recall, and F1-scores for most anemia levels indicates that the chosen features are informative for predicting anemia. However, the model had a difficulty in predicting level 0 just like other algorithms as we have seen before.
+
+\section{Algorithm 5 : Decision Tree}
+
+\subsection{Justification for choosing Decision Tree}
+
+
+Decision Trees are a popular algorithm for both classification and regression tasks. They are easy to interpret, can handle both categorical and continuous features, and do not require extensive data preprocessing. Decision Trees work by recursively partitioning the feature space based on the most informative features, creating a tree-like structure based on different decision rules. This hierarchical structure can capture complex interactions between features and can be useful for identifying important predictors of anemia levels.
+
+\subsection{Tuning the model}
+
+To tune the Decision Tree model, we performed a grid search with cross-validation to find the optimal values for the $max\_depth$, $min\_samples\_split$, and $min\_samples\_leaf$ hyperparameters. The $max\_depth$ parameter controls the maximum depth of the tree, $min\_samples\_split$ specifies the minimum number of samples required to split an internal node, and $min\_samples\_leaf$ defines the minimum number of samples required to be at a leaf node. The grid search revealed that the best hyperparameters were $max\_depth=10$, $min\_samples\_split=2$, and $min\_samples\_leaf=1$, achieving a cross-validation accuracy of $0.9138$.
+
+
+After training the Decision Tree model with the optimal hyperparameters, we evaluated its performance on the test set. The optimized model achieved an accuracy of $0.9233$, which is better than the default Decision Tree model we trained and we had an accuracy of $0.8977$.
+
+\subsection{Effectiveness of Decision Tree}
+
+
+The classification report provides more detailed metrics:
+
+
+- Precision: The optimized model achieved high precision for all anemia levels, with perfect precision (1.00) for level 0, and values ranging from 0.87 to 0.97 for the other levels.
+
+
+- Recall: The model again achieved perfect recall (1.00) for anemia level 0 and high recall for all other levels ranging in between 0.84 and 0.98.
+
+
+- F1-score: The F1-score was perfect 1 for anemia level 0 and high for all other levels, ranging from 0.86 to 0.95.
+
+The optimized Decision Tree model showed very good performance in predicting all anemia levels, including the level 0 for which other algorithms repeatedly failed.
+
+
+\subsection{Insights}
+
+The Decision Tree model's performance suggests that there are strong hierarchical relationships between the input features and the anemia levels. The model's ability to achieve high accuracy and excellent precision, recall, and F1-scores for all anemia levels indicates that the chosen features are highly informative for predicting anemia and that the Decision Tree algorithm is able to capture the complex interactions between these features. The model's success in predicting even the less represented classes suggests that the Decision Tree's hierarchical structure is well-suited for our dataset and can handle the imbalanced nature of the classes.
+
+
+\section{Algorithm 6 : Gradient Boosting}
+
+\subsection{Justification for choosing Gradient Boosting}
+
+Gradient Boosting is an ensemble based learning algorithm. It combines multiple weak learners which are generally different Decision Trees, to create an overall strong predictive model. It iteratively trains the new models to correct the errors made by the previous models and then gradually improves the overall performance. Gradient Boosting is known for its ability to handle complex, non-linear relationships between features and can achieve high accuracy in many real-world classification and regression tasks. Its ability to handle both categorical and continuous features and its robustness to outliers and missing data make it a very suitable choice for our dataset.
+
+
+\subsection{Tuning the model}
+
+To tune the Gradient Boosting model, we performed a randomized search with cross-validation to find the optimal values for the $n\_estimators$, $learning\_rate$, and $max\_depth$ hyperparameters. The $n\_estimators$ parameter controls the number of weak learners (Decision Trees) in the ensemble, $learning\_rate$ determines the contribution of each tree to the final prediction, and $max\_depth$ specifies the maximum depth of each individual tree. The randomized search revealed that the best hyperparameters were $n\_estimators=59$, $learning\_rate=0.051120290490909465$, and $max_depth=3$, achieving a cross-validation accuracy of $0.9268$.
+
+After training the Gradient Boosting model with the optimal hyperparameters, we evaluated its performance on the test set. The best hypertuned model achieved an accuracy of $0.9356$, which is a slight decline over the base Gradient Boosting model we trained and we had an accuracy of $0.9385$.
+
+
+\subsection{Effectiveness}
+
+
+The classification report provides more detailed metrics:
+
+
+- Precision: The optimized model achieved high precision for all anemia levels, with perfect precision 1 for level 0, and values ranging from 0.81 to 1.00 for the other levels.
+
+
+- Recall: The model again achieved perfect recall 1 for anemia level 0 and high recall for all other levels values ranging from 0.88 to 0.97.
+
+
+- F1-score: The F1-score was perfect for anemia level 0 and high for all other levels, ranging from 0.88 to 0.96.
+
+The optimized Gradient Boosting model showed excellent performance in predicting all anemia levels, including the level 0 for which very few algorithms could do good.
+
+
+\subsection{Insights}
+
+The Gradient Boosting model's performance suggests that the ensemble of weak learners (Decision Trees) is able to capture the complex, non-linear relationships between the input features and the different anemia levels. The model's ability to achieve high accuracy and excellent precision, recall, and F1-scores for all anemia levels indicates that the chosen features are highly informative for predicting anemia and that the Gradient Boosting algorithm is able to leverage these features effectively. The model's success in predicting even the less represented classes suggests that the iterative learning process of Gradient Boosting is well-suited for handling the imbalanced nature of the dataset and can progressively improve the model's performance on the minority classes.
+
+
+Here is a visual comparison of the base models trained :
+
+\includegraphics[width=.9\textwidth]{base_comp.png}
+\clearpage
+Here is a visual comparison of the hypertuned models trained :
+
+\includegraphics[width=.9\textwidth]{tuned.png}
+
+Here is a visual comparison of how the models improved after hyperparamater tuning :
+
+\includegraphics[width=.9\textwidth]{baseVtuned.png}
+
+As can be seen, Naive Bayes model improved a lot after tuning, where as other models ddin't see any drastic change.

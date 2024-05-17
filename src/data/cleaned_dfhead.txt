@@ -1,0 +1,42 @@
+    age_group  past_births  1stbirth_age  adj_hemo_altsmoke  anemia_level  breastfed  adj_hemo_alt
+3        27.0            1            25               95.0             3   5.000000         114.0
+5        32.0            1            30              113.0             2   5.952867         119.0
+6        37.0            2            32              121.0             1   0.000000         102.0
+9        22.0            1            19              108.0             3   0.000000         113.0
+12       27.0            1            24              116.0             2  24.000000         109.0
+    anemia_level1  residence_rural  residence_urban  wealth_middle  wealth_poorer
+3               1            False             True          False          False
+5               1            False             True          False          False
+6               2            False             True          False          False
+9               1            False             True          False          False
+12              2            False             True          False          False
+    wealth_poorest  wealth_richer  wealth_richest  net_available_no  net_available_yes
+3            False          False            True             False               True
+5            False          False            True             False               True
+6            False          False            True             False               True
+9            False          False            True             False               True
+12           False          False            True             False               True
+    is_smoker_no  is_smoker_yes  education_higher  education_no  education_primary
+3           True          False             False         False              False
+5           True          False              True         False              False
+6           True          False             False         False              False
+9           True          False             False         False              False
+12          True          False              True         False              False
+    education_secondary  marital_status_divorced  marital_status_living  marital_status_married
+3                  True                    False                  False                    True
+5                 False                    False                  False                    True
+6                  True                    False                  False                    True
+9                  True                    False                  False                    True
+12                False                    False                  False                    True
+    marital_status_never  marital_status_separated  marital_status_widowed  partner_coliving_elsewhere
+3                  False                     False                   False                       False
+5                  False                     False                   False                       False
+6                  False                     False                   False                       False
+9                  False                     False                   False                       False
+12                 False                     False                   False                       False
+    partner_coliving_unknown  partner_coliving_yes  fever_history_no  fever_history_unknown
+3                      False                  True              True                  False
+5                      False                  True              True                  False
+6                      False                  True              True                  False
+9                      False                  True              True                  False
+12                     False                  True              True                  False

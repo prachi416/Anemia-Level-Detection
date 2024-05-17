@@ -1,0 +1,583 @@
+\chapter{Phase 1}
+
+
+\section{Problem Statement}
+
+The prevalence of anemia among children remains a significant public health concern globally. Despite advancements in healthcare, understanding the factors contributing to anemia in this demographic is crucial for effective intervention and prevention strategies. In children aged 0-59 months, anemia remains a persistent health concern, necessitating comprehensive analysis and predictive modeling to understand its multifactorial determinants. This project aims to leverage advanced data science techniques to analyze a diverse array of socio-demographic, health-related, and behavioral factors and their influence on anemia prevalence. By employing predictive modeling, we seek to develop accurate models capable of forecasting anemia levels among children, thereby enabling targeted interventions and healthcare strategies. Anemia prevalence among children is influenced by a myriad of factors, including age demographics, socio-economic status of their parents, nutritional intake, and health behaviors. Understanding the interplay of these factors and their impact on anemia prevalence is essential for designing effective intervention strategies and improving child health outcomes. The potential of our project to contribute to the domain of child health is crucial for several reasons:
+
+\begin{itemize}
+    \item \textbf{Targeted Interventions} Our analysis will enable the identification of high-risk populations accurately, allowing for targeted interventions where they are most needed.
+    \item \textbf{Improved Predictive Models} By developing predictive models, we can forecast anemia levels among children bewteen the age of 0-59 months more accurately, facilitating early detection and intervention.
+    \item \textbf{Holistic Healthcare Approach} By incorporating behavioral factors such as smoking habits, bed net usage, and medication adherence of the mother into our analysis, we adopt a holistic approach to understanding anemia prevalence. This comprehensive perspective enables healthcare providers to tailor interventions that address not only physiological factors but also behavioral and lifestyle determinants of anemia.
+    \item \textbf{Global Health Impact} With children anemia being a significant global health concern, our project has the potential to improve health outcomes for children worldwide, addressing health disparities and promoting equity in healthcare delivery.
+\end{itemize}
+
+
+
+
+
+\section{Data Sources}
+
+The dataset sourced from Kaggle comprises 33,926 rows and 17 columns. It includes essential attributes such as Age groups, Residence type, Education level, Wealth index, Birth history, Hemoglobin levels, Anemia status, and Behavioral factors like smoking habits and iron supplementation. Prior to analysis, the dataset underwent rigorous cleaning and manipulation to ensure data integrity and facilitate efficient Exploratory Data Analysis (EDA). This preprocessing stage was vital for enhancing the quality and reliability of insights derived from the dataset. Here is the dataset source :
+\href{https://www.kaggle.com/datasets/adeolaadesina/factors-affecting-children-anemia-level/data}{Factors Affecting Anemia Level Dataset}.
+
+
+
+
+
+
+\section{Data Cleaning/Processing}
+
+Before data cleaning or pre-processing, let's take a look at the data to find out some basic information about it. Here is what \texttt{pandas.DataFrame.info} provides about the data :
+
+\includegraphics[width=.9\textwidth]{../img/df_info.png}
+
+
+\subsection{I. Handling Null Values}
+
+We checked the percent of rows that are null rows for each feature :
+
+\includegraphics[width=.9\textwidth]{../img/percent_null_rows.png}
+
+We dropped the rows for the predictor \texttt{Anemia level.1} and this way we ended up with a dataset of size 10182 rows × 17 columns.
+
+
+
+
+
+
+\subsection{II. Removing Duplicate Rows}
+Duplicate records in the dataset for the predictor \texttt{Anemia level.1} got removed to ensure the integrity and uniqueness of the data. We ended up with a dataset of size 10171 rows × 17 columns.
+
+\subsection{III. Check dataset size}
+After dropping the null and duplicate values, we check which columns will have how many rows we will have for each features.
+
+\includegraphics[width=.9\textwidth]{../img/numrows_postnulldup.png}
+
+\subsection{IV. Rename the features}
+We map the old column names to new short names for better feature handling.
+
+\subsection{V: Check unique values}
+Next we check the unique values for weach of the features, which will help us do one hot encoding and or label encodig later on.
+
+
+\subsection{VI: Fill null values with mean values}
+We previously found out for which features we need to fill the null values. Now we fill out the null values for \texttt{adj\_hemo\_altsmoke} feature with the mean values.
+
+
+
+\subsection{VII: Data modification with domain knowledge}
+\subsubsection{Breastfeeding data unmodified}
+
+Breastfeeding data or "When child put to breast" is labelled as \texttt{m34} variable during the data collection. The source has been cited in the references.
+
+This variable is time after the birth at which the respondent first breastfed the child. The first digit gives the units in which the respondent gave her answer. Code 0 means the child was breastfed immediately after birth, code 1 indicates the response was in hours, code 2 in days, with code 9 meaning a special answer was given. The last two digits give the time in the units given.
+
+Any value for time greater than 90 is a special answer. The response "Immediately" is recorded as 000.
+
+From the dataset, we found out \texttt{breastfed} feature contains three different types of data :
+
+\begin{itemize}
+    \item null values : \texttt{nan} type which are \texttt{<class 'float'>}. These data points are float type but null values.
+    \item true float data : A sample data point is \texttt{"100.0"} which are of type \texttt{<class 'str'>}. these data points can be converted to float values.
+    \item manually filled data : A sample data point is \texttt{"Days: 1"} which are of type \texttt{<class 'str'>}. These data points are string type but still can be converted to float values with domain knowledge.
+\end{itemize}
+
+
+
+
+
+\subsection{VIII: Bivariate Analysis on engineered features}
+
+We find no direct correlation between a child living in a traditional "family" with the child being severely anemic. For both the cases, proportion of being severly anemic is same.
+
+\includegraphics[width=.9\textwidth]{../img/hypo_familyVanemic.png}
+
+
+
+\subsection{IX: Feature Engineering 2}
+
+We introduce a new feature - adjusted hemoglobin level per altitude, smoke and past birth history. We found some articles which refers to some connection between children having iron deficiency and their mother's past birth history. So we think this can contribute to be a good feature. The source for our article has been cited in the references.
+
+
+
+
+\subsection{X: Feature Engineering 3}
+
+
+We introduce another new feature - traditional family value. We had a belief that traditional family values might have some correlation to the anemic levels of children. We calculate the new feature from three more features which were introduced based on whether the mother is married and coliving with her partner.
+
+
+
+
+\subsection{XI: Label encode the features}
+
+We label-encode both the features \texttt{anemia\_level} and \texttt{anemia\_level1}.  The mapping we used is here : \texttt{\{"Not anemic" : 1, "Mild" : 2, "Moderate" : 3, "Severe" : 4\}}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \subsection{Standardizing Values}
+% To ensure consistency, categorical variables such as Type of Place of Residence, Highest Educational Level, and Wealth Index will be standardized, correcting any inconsistencies in naming or categorization.
+
+% \subsection{Converting Data Types}
+% Data types for each column will be carefully reviewed and adjusted as necessary, converting numeric columns to \texttt{int} or \texttt{float} and categorical columns to \texttt{object} or \texttt{category}.
+
+% \subsection{Handling Outliers}
+% Outliers in numeric columns will be identified using appropriate statistical methods. These outliers will either be removed or adjusted based on established thresholds to avoid skewing the analysis.
+
+% \subsection{Creating New Variables}
+% New variables that could potentially provide additional insights into the dataset will be created. For example, anemia levels will be categorized based on hemoglobin concentration.
+
+% \subsection{Merging Anemia Level Columns}
+% The 'Anemia level' and 'Anemia level.1' columns will be merged into a single column when applicable, ensuring any discrepancies between them are resolved.
+
+% \subsection{Encoding Categorical Variables}
+% Categorical variables will be encoded using one-hot encoding or label encoding techniques to prepare the dataset for use in machine learning models.
+
+% \subsection{Normalization/Standardization}
+% Numeric columns will be normalized or standardized to ensure that the dataset is suitable for use with algorithms that are sensitive to the scale of input data.
+
+% \subsection{Error Corrections}
+% A thorough review of the dataset will be conducted to identify and correct any errors or inconsistencies, such as implausible values for certain variables.
+
+
+% \includegraphics[width=.9\textwidth]{images/.png}
+
+
+\section{Exploratory Data Analysis (EDA)}
+
+
+
+
+
+
+\subsection{I: Univariate Analysis}
+
+\subsubsection{Age group count}
+We can see that the age group distribution follows a normal distribution.
+
+\includegraphics[width=.75\textwidth]{../img/univar_age_group_count.png}
+
+\clearpage
+
+\subsubsection{Residence type}
+
+We can see most of the children data points are from rural residence :
+
+\includegraphics[width=.75\textwidth]{../img/univar_resident.png}
+
+
+\subsubsection{Education level}
+
+We have most of the children have their mothers having no education or secondary education :
+
+\includegraphics[width=.75\textwidth]{../img/univar_education.png}
+
+
+\subsubsection{Wealth index}
+The wealth index have almost equal distribution from all sectors of society :
+
+\includegraphics[width=.75\textwidth]{../img/univar_wealth.png}
+
+
+\subsubsection{Past Births}
+
+Most of the mothers have at least one or two births in last five years :
+
+\includegraphics[width=.75\textwidth]{../img/univar_past_births.png}
+
+
+
+\subsubsection{Mosquito net availability}
+
+A substantial amount of children data points have the mosquito bed net available :
+
+\includegraphics[width=.75\textwidth]{../img/univar_netavailable.png}
+
+
+\subsubsection{Whether mothers smoke}
+
+Very few of mothers of the whole dataset are smokers :
+
+\includegraphics[width=.75\textwidth]{../img/univar_smoker.png}
+
+\subsubsection{Marital status of mothers}
+A vast amount of mothers are married :
+
+\includegraphics[width=.75\textwidth]{../img/univar_marital_status.png}
+
+
+\subsubsection{Partner coliving}
+A significangt amount of mothers have their husband or partner coliving with them :
+
+\includegraphics[width=.75\textwidth]{../img/univar_partner_coliving.png}
+
+\subsubsection{Fever history}
+Most of the children didn't have any fever history in the last two weeks and very few mothers don't know whether their children did have any fever or not :
+
+\includegraphics[width=.75\textwidth]{../img/univar_fever_history.png}
+
+
+\subsubsection{Ironpills taken}
+A significant amount of children are not using any iron pills, sprinkles or syrups :
+
+\includegraphics[width=.75\textwidth]{../img/univar_ironpill_taken.png}
+
+
+\subsubsection{First birth age}
+
+We can see the distribution of mothers' age at their first birth follows a normal distribution :
+
+\includegraphics[width=.75\textwidth]{../img/univar_1stbirth_age.png}
+
+
+\subsubsection{Hemoglobine level adjusted with altitude}
+The distribution of Hemoglobine level adjusted with altitude also follows a normal distribution :
+
+\includegraphics[width=.75\textwidth]{../img/univar_adj_hemoalt.png}
+
+
+
+
+\subsubsection{Hemoglobine level adjusted with altitude and smoking}
+The distribution of Hemoglobine level adjusted with altitude and smoking also follows a normal distribution :
+
+\includegraphics[width=.75\textwidth]{../img/univar_adj_hemoaltsmk.png}
+
+
+
+
+\subsubsection{New variable : whether child lives in family}
+
+We introduced a new feature where check whether the children in the data point is actually living in a family or not. We figure out most of the children are living in a family :
+
+\includegraphics[width=.75\textwidth]{../img/univar_family.png}
+
+
+
+\subsection{II: Multivariate Analysis : Correlation among numeric columns}
+
+For the numeric type of columns, we create a correlation heatmap like the following :
+
+\includegraphics[width=.9\textwidth]{../img/multivar_numcorrmat.png}
+
+We can check, the adjusted hemoglobine wrt altitude feature and the adjusted hemoglobine wrt altitude and smoke feature have the highest correlation among all the pairs in the numeric types of features. The adjusted hemoglobine wrt altitude feature and the age at first birth of the respondent feature is also a little bit correlated.
+
+
+\subsection{III: Multivariate Analysis : Countplots}
+
+\subsubsection{Correlation of adjusted hemoglobine wrt altitude and smoke with anemia level}
+
+
+The graph of adjusted hemoglobin level wrt altitude and smoke follows a somewhat skewed normal distribution for all the diferent levels of anemia. For severely anemic children, we have very flat distribution of adjusted hemoglobine level wrt altitude and smoke - i.e. there is no certain peak which can pinpoint any range of feature values to.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_adj_hemo_altsmoke.png}
+% \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{../img/multivar_countplot_adj_hemo_altsmoke.png}
+
+\subsubsection{Correlation of marital status with anemia level}
+
+The "Married" category has the highest counts for all levels of anemia, which suggests that this category has the most individuals surveyed or that married individuals are more likely to be surveyed.
+
+The graph depicts the variation in Anemia level based on marital status. The graph is highly biased towards 'Married' status.
+
+The "Never in union" category has the second-highest counts across all anemia levels but has a particularly high count of individuals who are not anemic.
+
+The "Widowed" and "Divorced" categories have relatively more individuals with moderate anemia compared to mild anemia.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_marital_status.png}
+
+\subsubsection{Correlation of past fever history with anemia level}
+
+People with no fever history show more of mild to no anemia level whereas people with severe amenia are equal for both negative and positive fever history.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_fever_history.png}
+
+\subsubsection{Correlation of residence type with anemia level}
+
+% The graph shows Rural population slightly more prone to anemia as compared to Urban population.
+
+Here are the observations from the plot:
+
+\begin{itemize}
+    \item The count of not anemic individuals is more or less same in urban areas and rural areas.
+    \item Moderate anemia is more prevalent in rural areas.
+    \item The count of individuals with severe anemia is the lowest in both areas, but it's higher in rural areas.
+\end{itemize}
+
+Overall, the total count of individuals (across all anemia levels) seems to be higher in rural areas than in urban areas.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_residence.png}
+
+
+\subsubsection{Correlation of mosquito bed net availability with anemia level}
+
+For both \texttt{Yes} and \texttt{No} categories, the count of severely anemic individuals is the lowest, but greater portion of families with mosquito bed net have severe anemia.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_net_available.png}
+
+\subsubsection{Correlation of age with anemia level}
+
+The graph follows a trend of younger generation being more prone to anemia and it decreases with increasing age.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_age_group.png}
+
+\subsubsection{Correlation of age at mother's first birth with anemia level}
+
+From the graph, we can check the children with mothers having their first birth in the age range of 14 to 25 tend to severly anemic.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_1stbirth_age.png}
+
+
+
+\subsubsection{Correlation of iron pills taken with anemia level}
+
+There's a direct correlation between consumption of iron pills and anemia level. Chances of getting anemia are much lower in people who consume iron pills
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_ironpill_taken.png}
+
+\subsubsection{Correlation of past births of mother with anemia level}
+
+The chances of anemia is much higher in children who are first-born or second-born in the family. It drastically decreases after that.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_past_births.png}
+
+\subsubsection{Correlation of wealth index with anemia level}
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_wealth.png}
+
+The "Richest" category has the highest count of individuals who are not anemic, followed by a lower count of those with mild anemia, and very few with moderate or severe anemia. Where as the "Poorest" category has the lowest count of not anemic individuals and the highest count of severe anemia.
+
+\subsubsection{Correlation of education level with anemia level}
+
+Education level follows a pattern where no education is direcly linked to higher levels of anemia followed by secondary education and then primary.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_education.png}
+
+\subsubsection{Correlation of smoking habit with anemia level}
+
+We can see the number of non-smoker mothers is much higher than the number of smoker mothers for all levels of children anemia. Among non-smokers, the majority children are moderately anemic, followed by a smaller number with no anemia, and an even smaller number with mild anemia. The count of smoker mothers with children having anemia is minimal.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_is_smoker.png}
+
+\subsubsection{Correlation of adjusted hemoglobin wrt altitude with anemia level}
+
+From the graph, we can check that if the adjusted hemoglobin level wrt altitude is below 70, children tends to be severly anemic.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_adj_hemo_alt.png}
+
+
+
+\subsubsection{Correlation of partner coliving with anemia level}
+
+
+We find that proportional ratio of four different anemic levels are almost similar for both the cases - whether the mother's partner is coliving or not.
+
+\includegraphics[width=1.2\textwidth]{../img/multivar_countplot_partner_coliving.png}
+
+\newpage
+
+\subsection{IV: Multivariate Analysis : Boxplots}
+
+Box plots are typical five-number summary: minimum value, first quartile (Q1), median, third quartile (Q3), and maximum value.
+
+\includegraphics[width=0.75\textwidth]{../img/multivar_boxplotnum.png}
+
+
+
+\newpage
+
+\subsection{V: Hypothesis testing}
+
+
+Hypothesis testing is considered a bedrock of the data analysis. We do couple of hypothesis testing to check whether some of our primary inferences from the dataset are correct or not.
+
+\subsubsection{Correlation of hemoglobin level with anemia}
+
+
+Hemoglobin density is directly related to \texttt{anemia\_level}. The lower the hemoglobin levels in the blood, the greater the severity of the anemic condition.
+
+
+\includegraphics[width=1.02\textwidth]{../img/hypo_hemoaltsmkVanemia.png}
+
+\includegraphics[width=1.02\textwidth]{../img/hypo_hemoaltVanemia.png}
+
+\newpage
+
+\subsubsection{Correlation of residence type with anemia}
+
+The highest concentration of anemic people is located in rural areas. In this region, the proportion of moderate and severe cases is higher.
+
+\includegraphics[width=1.2\textwidth]{../img/hypo_resiVanemic.png}
+\includegraphics[width=1.2\textwidth]{../img/hypo_resiVanemic1.png}
+
+\newpage
+
+\subsubsection{Correlation of education level with anemia}
+
+The highest concentration of anemic people belongs to people with no education. Parent with higher education have less anemic children. Similarly to the place of residence, the proportion of moderate and severe cases for this group is also higher.
+
+\includegraphics[width=1.2\textwidth]{../img/hypo_eduVanemic.png}
+
+\includegraphics[width=1.2\textwidth]{../img/hypo_eduVanemic1.png}
+
+\newpage
+
+
+\subsubsection{Correlation of mosquito bed net available with anemia}
+
+
+We found a low correlation of anemic children with their households having access to mosquito bed net. It seems to be evenly distributed.
+
+\includegraphics[width=1.2\textwidth]{../img/hypo_netVanemic.png}
+
+\includegraphics[width=1.2\textwidth]{../img/hypo_netVanemic1.png}
+
+\newpage
+
+
+\subsubsection{Correlation of cigarettes smoking with anemia}
+
+From \texttt{anemia\_level} feature it was evident that a higher concentration of anemic children have their mothers smoking cigarettes. However \texttt{anemia\_level1} feature reveals severely anemic children have their mothers as non-smokers. Therefore no hypothesis can be made on direct correlation between smoking mothers and anemic children.
+
+\includegraphics[width=1.02\textwidth]{../img/hypo_smokeVanemic.png}
+
+\includegraphics[width=1.02\textwidth]{../img/hypo_smokeVanemic1.png}
+\newpage
+
+
+\subsubsection{Correlation of taking iron pills with anemia}
+
+We find little correlation of children taking iron pills or supplements with having anemia.
+
+\includegraphics[width=1.2\textwidth]{../img/hypo_pillsVanemic.png}
+
+\includegraphics[width=1.2\textwidth]{../img/hypo_pillsVanemic1.png}
+
+\newpage
+
+
+\subsection{VI: Univariate Analysis comparison for domain modified data}
+
+\subsubsection{Breastfeeding data inspection}
+
+We first consider the data which are already in the specified format i.e. with float like values like 100.0 or 200.0 etc. -  not entered in dataset manually like 'hours 2' or 'days 3' etc. We can check the valid data in the format of m34 variable have two distribution - one around 100 and another around 200; which means most of the dataset in the m34 format is either in hours or days.
+
+\includegraphics[width=.75\textwidth]{../img/univar_breastfed_rawplot.png}
+
+
+\subsubsection{Breastfeeding data cleaning}
+After modifying the manually input data points into float type values, here is plot of the whole distribution of the breastfeeding data with valid float values :
+
+\includegraphics[width=0.96\textwidth]{../img/univar_breastfed.png}
+
+
+\subsubsection{Breastfeeding data modification}
+
+We now plot the whole distribution of the breastfeeding data after replacing null values with the mean of the dataset :
+
+\includegraphics[width=0.96\textwidth]{../img/univar_breastfed1.png}
+
+\newpage
+
+
+\subsection{VII: Univariate Analysis on engineered features}
+
+We found out most of the children are living in a "traditional family".
+
+\includegraphics[width=.75\textwidth]{../img/univar_family.png}
+
+
+\newpage
+
+
+\subsection{VIII: Bivariate Analysis on engineered features}
+
+We found out there is almost no correlation of children being into a "traditional family" vs having anemia. Here are the plots.
+
+\includegraphics[width=.75\textwidth]{../img/hypo_familyVanemic.png}
+
+\includegraphics[width=.75\textwidth]{../img/hypo_familyVanemic1.png}
+
+
+\subsection{IX: Clustering for Pattern Identification }
+
+The scatter plot visualizes three distinct clusters (0, 1, and 2) of respondents based on their 'Age Group' and 'Age at First Birth'. Clusters are color-coded and show that cluster 0 predominantly contains younger age groups with younger ages at first birth, cluster 1 contains mid-range age groups with a wide range of ages at first birth, and cluster 2 mostly comprises older age groups with generally older ages at first birth. There's a visible trend that as the age group increases, the age at first birth tends to increase as well, indicating that in this sample, older age groups are associated with a later age at first birth.
+
+\includegraphics[width=.75\textwidth]{../img/eda_clustering.png}
+
+
+\subsection{X: Principal Component Analysis}
+
+
+The provided PCA analysis plot shows that the first two principal components account for approximately 51\% of the variance in the dataset, with a significant increase in explained variance achieved by the first four components, reaching nearly 80\%. The curve starts to plateau after the fifth component, suggesting that additional components contribute less to explaining the variance. Based on the elbow in the graph, choosing four to five principal components could be sufficient for most analyses, as they capture the majority of the variability in the data while reducing dimensionality.
+
+\includegraphics[width=.75\textwidth]{../img/eda_pca.png}
+
+
+
+\subsection{XI: Feature Importance Analysis}
+
+The RandomForestClassifier has been trained on your dataset, and the results indicate that the feature \texttt{adj\_hemo\_altsmoke} is the most important one for predicting \texttt{anemia\_level}, with a relative importance of approximately 60.16\%. The second most significant feature is \texttt{adj\_hemo\_altsmkbirth}, with a relative importance of about 21.31\%. All other features have significantly lower importance values, with \texttt{adj\_hemo\_altbirth} and \texttt{1stbirth\_age} being somewhat more influential than the rest, but still much less so than the top two features.
+
+\VerbatimInput{../data/featimp.txt}
+
+
+\subsection{XII: Outlier Detection}
+
+
+The outlier detection process identified 145 outliers in the dataset based on the features \texttt{adj\_hemo\_altsmoke} and \texttt{adj\_hemo\_altsmkbirth}. The outliers have mean values significantly lower than the general population for these features, which could indicate extreme cases or data entry errors. After removing these outliers, the cleaned dataset has 9,906 remaining entries, and the summary statistics show more consistent mean values and smaller standard deviations for these features, suggesting a more homogenous and possibly more reliable dataset for further analysis.
+
+Here is the outlier summary :
+
+\VerbatimInput{../data/outlier_summary.txt}
+
+Here is the adjusted summary :
+
+\VerbatimInput{../data/adjstd_summary.txt}
+
+
+
+\subsection{XIII: Correlation Analysis}
+
+The heatmap indicates a strong negative correlation -0.86 between \texttt{adj\_hemo\_altsmoke} and \texttt{anemia\_level}, suggesting that higher levels of adjusted hemoglobin associated with smoking are linked to lower anemia levels. It also shows a strong positive correlation 0.90 between \texttt{adj\_hemo\_altbirth} and \texttt{adj\_hemo\_altsmkbirth}, meaning these two adjusted hemoglobin metrics tend to increase or decrease together.
+
+\includegraphics[width=.75\textwidth]{../img/corr_heatmap_cleaned.png}
+
+
+\newpage
+
+\section{Cleaned Data}
+
+Here is a glimpse of the data after cleaning :
+
+\VerbatimInput{../data/cleaned_dfhead.txt}
+
+
+
+
+
+
+\clearpage

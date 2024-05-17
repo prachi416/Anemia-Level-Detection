@@ -1,0 +1,91 @@
+\documentclass[a4paper, 12pt]{article}
+
+\linespread{1.2}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{indentfirst}
+\usepackage{lipsum}
+\usepackage{xcolor}
+\usepackage{soul}
+\usepackage{hyperref}
+\usepackage{csvsimple}
+% \usepackage[a6paper,margin=15mm]{geometry}
+\usepackage{titlesec}
+\usepackage{tabularray}
+\usepackage{graphicx}
+\usepackage{minted}
+\usepackage{blindtext}
+\usepackage{listings}
+\usepackage[dvipsnames]{xcolor}
+
+
+
+
+\RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}%
+{fontsize=\scriptsize,
+    %
+    frame=lines,  % top and bottom rule only
+    framesep=2em, % separation between frame and text
+    rulecolor=\color{Gray},
+    %
+    label=\fbox{\color{Black}},
+    labelposition=topline,
+    %
+    commandchars=\|\(\), % escape character and argument delimiters for
+                        % commands within the verbatim
+    commentchar=*        % comment character
+}
+
+
+
+\addtolength{\oddsidemargin}{-.5in}
+\addtolength{\evensidemargin}{-.5in}
+\addtolength{\textwidth}{1in}
+
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1in}
+
+% \author{Sayan Chaudhuri}
+
+\begin{document}
+\input{title}
+
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+% \frontmatter
+\tableofcontents
+
+% Recurring package issue
+% \underline{\textbf{NOTE}}: Due to compilation package issues, this content page didn't compile properly.
+
+
+\clearpage
+% \listoffigures
+% \clearpage
+% \listoftables %remove this line if you do not have any tables
+% \clearpage
+
+\pagenumbering{arabic}
+
+\input{phase1_short}
+\clearpage
+
+\input{phase2}
+\clearpage
+
+\input{phase3}
+\clearpage
+
+\input{instr}
+
+\clearpage
+
+\input{appendix}
+
+\end{document}

@@ -1,0 +1,161 @@
+\chapter{Phase 1}
+
+
+\section{Problem Statement}
+
+The prevalence of anemia among children remains a significant public health concern globally. Despite advancements in healthcare, understanding the factors contributing to anemia in this demographic is crucial for effective intervention and prevention strategies. In children aged 0-59 months, anemia remains a persistent health concern, necessitating comprehensive analysis and predictive modeling to understand its multifactorial determinants. This project aims to leverage advanced data science techniques to analyze a diverse array of socio-demographic, health-related, and behavioral factors and their influence on anemia prevalence. By employing predictive modeling, we seek to develop accurate models capable of forecasting anemia levels among children, thereby enabling targeted interventions and healthcare strategies. Anemia prevalence among children is influenced by a myriad of factors, including age demographics, socio-economic status of their parents, nutritional intake, and health behaviors. Understanding the interplay of these factors and their impact on anemia prevalence is essential for designing effective intervention strategies and improving child health outcomes. The potential of our project to contribute to the domain of child health is crucial for several reasons:
+
+\begin{itemize}
+    \item \textbf{Targeted Interventions} Our analysis will enable the identification of high-risk populations accurately, allowing for targeted interventions where they are most needed.
+    \item \textbf{Improved Predictive Models} By developing predictive models, we can forecast anemia levels among children bewteen the age of 0-59 months more accurately, facilitating early detection and intervention.
+    \item \textbf{Holistic Healthcare Approach} By incorporating behavioral factors such as smoking habits, bed net usage, and medication adherence of the mother into our analysis, we adopt a holistic approach to understanding anemia prevalence. This comprehensive perspective enables healthcare providers to tailor interventions that address not only physiological factors but also behavioral and lifestyle determinants of anemia.
+    \item \textbf{Global Health Impact} With children anemia being a significant global health concern, our project has the potential to improve health outcomes for children worldwide, addressing health disparities and promoting equity in healthcare delivery.
+\end{itemize}
+
+
+
+
+
+\section{Data Sources}
+
+The dataset sourced from Kaggle comprises 33,926 rows and 17 columns. It includes essential attributes such as Age groups, Residence type, Education level, Wealth index, Birth history, Hemoglobin levels, Anemia status, and Behavioral factors like smoking habits and iron supplementation. Prior to analysis, the dataset underwent rigorous cleaning and manipulation to ensure data integrity and facilitate efficient Exploratory Data Analysis (EDA). This preprocessing stage was vital for enhancing the quality and reliability of insights derived from the dataset. Here is the dataset source :
+\href{https://www.kaggle.com/datasets/adeolaadesina/factors-affecting-children-anemia-level/data}{Factors Affecting Anemia Level Dataset}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Exploratory Data Analysis (EDA) Summary}
+
+
+
+
+
+
+\subsection{Univariate Analysis}
+
+
+Here are the key findings from univariate analysis :
+\begin{itemize}
+	\item We found out the age group distribution follows a normal distribution.
+	\item Most of the children data points were from rural residence.
+	\item We have most of the children have their mothers having no education or secondary education.
+	\item The wealth index have almost equal distribution from all sectors of society.
+	\item Most of the mothers have at least one or two births in last five years.
+	\item A substantial amount of children data points have the mosquito bed net available.
+	\item Very few of mothers of the whole dataset are smokers.
+	\item A vast amount of mothers are married.
+	\item A significangt amount of mothers have their husband or partner coliving with them.
+	\item Most of the children didn't have any fever history in the last two weeks and very few mothers don't know whether their children did have any fever or not.
+	\item A significant amount of children are not using any iron pills, sprinkles or syrups.
+	\item We could see the distribution of mothers' age at their first birth follows a normal distribution.
+	\item The distribution of Hemoglobine level adjusted with altitude as well as the distribution of Hemoglobine level adjusted with altitude and smoking also follows a normal distribution.
+\end{itemize}
+
+
+
+
+
+\subsection{Multivariate Analysis : Correlation among numeric columns}
+
+For the numeric type of columns, we created a correlation heatmap which indicated that the adjusted hemoglobine wrt altitude feature and the adjusted hemoglobine wrt altitude and smoke feature have the highest correlation among all the pairs in the numeric types of features. The adjusted hemoglobine wrt altitude feature and the age at first birth of the respondent feature is also a little bit correlated.
+
+
+\subsection{Multivariate Analysis : Countplots}
+
+Here are the key observations from the multivariate analysis :
+\begin{itemize}
+	\item The graph of adjusted hemoglobin level wrt altitude and smoke follows a somewhat skewed normal distribution for all the diferent levels of anemia.
+	\item The "Married" category in the marital status has the highest counts for all levels of anemia, which suggests that this category has the most individuals surveyed or that married individuals are more likely to be surveyed.
+	\item People with no fever history show more of mild to no anemia level whereas people with severe amenia are equal for both negative and positive fever history.
+    \item The count of not anemic individuals is more or less same in urban areas and rural areas.
+	\item Moderate anemia is more prevalent in rural areas.
+	\item The count of individuals with severe anemia is the lowest in both areas, but it's higher in rural areas.
+	\item For both \texttt{Yes} and \texttt{No} categories, the count of severely anemic individuals is the lowest, but greater portion of families with mosquito bed net have severe anemia.
+	\item The graph follows a trend of younger generation being more prone to anemia and it decreases with increasing age.
+	\item The children with mothers having their first birth in the age range of 14 to 25 tend to severly anemic.
+	\item There's a direct correlation between consumption of iron pills and anemia level. Chances of getting anemia are much lower in people who consume iron pills.
+	\item The chances of anemia is much higher in children who are first-born or second-born in the family. It drastically decreases after that.
+	\item The "Richest" category of wealth index has the highest count of individuals who are not anemic, followed by a lower count of those with mild anemia, and very few with moderate or severe anemia. Where as the "Poorest" category has the lowest count of not anemic individuals and the highest count of severe anemia.
+	\item Education level follows a pattern where no education is direcly linked to higher levels of anemia followed by secondary education and then primary.
+	\item The number of non-smoker mothers is much higher than the number of smoker mothers for all levels of children anemia. Among non-smokers, the majority children are moderately anemic, followed by a smaller number with no anemia, and an even smaller number with mild anemia. The count of smoker mothers with children having anemia is minimal.
+	\item If the adjusted hemoglobin level wrt altitude is below 70, children tends to be severly anemic.
+	\item We find that proportional ratio of four different anemic levels are almost similar for both the cases - whether the mother's partner is coliving or not.
+\end{itemize}
+
+
+
+
+\subsection{Hypothesis testing}
+
+Hypothesis testing is considered a bedrock of the data analysis. We do couple of hypothesis testing to check whether some of our primary inferences from the dataset are correct or not. here are the key findings :
+
+\begin{itemize}
+	\item Hemoglobin density is directly related to \texttt{anemia\_level}. The lower the hemoglobin levels in the blood, the greater the severity of the anemic condition.
+	\item The highest concentration of anemic people is located in rural areas. In this region, the proportion of moderate and severe cases is higher.
+	\item The highest concentration of anemic people belongs to people with no education. Parent with higher education have less anemic children. Similarly to the place of residence, the proportion of moderate and severe cases for this group is also higher.
+	\item We found a low correlation of anemic children with their households having access to mosquito bed net. It seems to be evenly distributed.
+	\item From \texttt{anemia\_level} feature it was evident that a higher concentration of anemic children have their mothers smoking cigarettes. However \texttt{anemia\_level1} feature reveals severely anemic children have their mothers as non-smokers. Therefore no hypothesis can be made on direct correlation between smoking mothers and anemic children.
+	\item We find little correlation of children taking iron pills or supplements with having anemia.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Clustering for Pattern Identification }
+
+The scatter plot visualizes three distinct clusters (0, 1, and 2) of respondents based on their 'Age Group' and 'Age at First Birth'. Clusters are color-coded and show that cluster 0 predominantly contains younger age groups with younger ages at first birth, cluster 1 contains mid-range age groups with a wide range of ages at first birth, and cluster 2 mostly comprises older age groups with generally older ages at first birth. There's a visible trend that as the age group increases, the age at first birth tends to increase as well, indicating that in this sample, older age groups are associated with a later age at first birth.
+
+
+
+\subsection{Principal Component Analysis}
+
+
+The provided PCA analysis plot shows that the first two principal components account for approximately 51\% of the variance in the dataset, with a significant increase in explained variance achieved by the first four components, reaching nearly 80\%. The curve starts to plateau after the fifth component, suggesting that additional components contribute less to explaining the variance. Based on the elbow in the graph, choosing four to five principal components could be sufficient for most analyses, as they capture the majority of the variability in the data while reducing dimensionality.
+
+
+
+\subsection{Feature Importance Analysis}
+
+The RandomForestClassifier has been trained on your dataset, and the results indicate that the feature \texttt{adj\_hemo\_altsmoke} is the most important one for predicting \texttt{anemia\_level}, with a relative importance of approximately 60.16\%. The second most significant feature is \texttt{adj\_hemo\_altsmkbirth}, with a relative importance of about 21.31\%. All other features have significantly lower importance values, with \texttt{adj\_hemo\_altbirth} and \texttt{1stbirth\_age} being somewhat more influential than the rest, but still much less so than the top two features.
+
+
+\subsection{Outlier Detection}
+
+
+The outlier detection process identified 145 outliers in the dataset based on the features \texttt{adj\_hemo\_altsmoke} and \texttt{adj\_hemo\_altsmkbirth}. The outliers have mean values significantly lower than the general population for these features, which could indicate extreme cases or data entry errors. After removing these outliers, the cleaned dataset has 9,906 remaining entries, and the summary statistics show more consistent mean values and smaller standard deviations for these features, suggesting a more homogenous and possibly more reliable dataset for further analysis.
+
+
+
+
+
+
+
+\clearpage
